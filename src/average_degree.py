@@ -18,9 +18,10 @@ def main():
     graph = TwitterNodeGraphWithSlidingWindow(timedelta(seconds=60))
     tweets = (parse_tweet(text) for text in readfile(input_file) if is_tweet_text(text))
     with open(output_file, mode='w') as foutput:
-        for tweet in tweets:
-            graph.add_tweet(tweet)
-            foutput.write("%.2f\n" % graph.average_degree)
+        for tweet in tweets: 
+            if tweet.createdAt > graph.min_allowed_tweet_datetime:
+                graph.add_tweet(tweet)
+                foutput.write("%.2f\n" % graph.average_degree)
 
 if __name__ == '__main__':
     sys.exit(int(main() or 0))

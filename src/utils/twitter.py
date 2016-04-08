@@ -213,7 +213,7 @@ class TwitterNodeGraphWithSlidingWindow(object):
     @property
     def min_allowed_tweet_datetime(self):
         """get min allowed creation time for tweet."""
-        return self.__tweets__
+        return self.__min_timestamp__
 
     @property
     def number_of_nodes(self):
@@ -232,7 +232,7 @@ class TwitterNodeGraphWithSlidingWindow(object):
 
     def add_tweet(self, tweet):
         """add tweet to the graph."""
-        is_tweet_newer = tweet.createdAt >= self.__min_timestamp__
+        is_tweet_newer = tweet.createdAt > self.__min_timestamp__
         if is_tweet_newer:
             self.__add_new_tweet__(tweet)
             timestamp = self.__reset_sliding_window_ts__()
