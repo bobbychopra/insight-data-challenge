@@ -18,8 +18,13 @@ def main():
     graph = TwitterNodeGraphWithSlidingWindow(timedelta(seconds=60))
     tweets = (parse_tweet(text) for text in readfile(input_file) if is_tweet_text(text))
     with open(output_file, mode='w') as foutput:
-        for tweet in tweets: 
-            if tweet.createdAt > graph.min_allowed_tweet_datetime:
+        # use generator style syntax, rather than list comprehensions to handle
+        #  large file contents
+        for tweet in tweets:
+            # add tweet only if within sliding window timestamp
+            #  didn't want this to be a method on graph, as it seems
+            #  like a concern on processing side
+            if tweet.created_at > graph.min_allowed_tweet_datetime:
                 graph.add_tweet(tweet)
                 foutput.write("%.2f\n" % graph.average_degree)
 

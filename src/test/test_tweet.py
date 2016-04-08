@@ -27,7 +27,7 @@ class TweetTests(unittest.TestCase):
     def test_tweet_parses_timestamp(self):
         """test if the tweet parses the string timestamp."""
         tweet = Tweet(self.CREATION_TS, self.TAGS)
-        self.assertEqual(self.CREATED_AT, tweet.createdAt)
+        self.assertEqual(self.CREATED_AT, tweet.created_at)
 
 if __name__ == '__main__':
     unittest.main()

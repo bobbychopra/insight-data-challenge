@@ -24,13 +24,13 @@ def parse_tweet(text):
 class Tweet(object):
     """Class representing a Tweet."""
 
-    def __init__(self, createdAt, hashtags):
+    def __init__(self, created_at, hashtags):
         """initialize the tweet class.
 
-        createdAt:string
+        created_at:string
         hashtags:string set
         """
-        self.__createdAt__ = parse(createdAt)
+        self.__created_at__ = parse(created_at)
         self.__hashtags__ = set(hashtags)
 
     @property
@@ -39,18 +39,18 @@ class Tweet(object):
         return self.__hashtags__
 
     @property
-    def createdAt(self):
+    def created_at(self):
         """get the creation time for tweet."""
-        return self.__createdAt__
+        return self.__created_at__
 
     @property
     def can_become_node(self):
         """check if tweet can become a valid node."""
         return len(self.hashtags) > 1
-    
+
     def __str__(self):
         """string representing tweet."""
-        return 'Hashtags: %s CreatedAt: %s' % (self.hashtags, self.createdAt)
+        return 'Hashtags: %s created_at: %s' % (self.hashtags, self.created_at)
 
 
 class TwitterNode(collections.Iterable):
@@ -63,7 +63,7 @@ class TwitterNode(collections.Iterable):
         tweet:Tweet
         """
         self.__nodename__ = name
-        self.__tweets__ = SortedListWithKey(key=lambda d: d.createdAt)
+        self.__tweets__ = SortedListWithKey(key=lambda d: d.created_at)
         self.add(tweet)
 
     @property
@@ -196,7 +196,7 @@ class TwitterNodeGraphWithSlidingWindow(object):
         """
         self.__graph__ = TwitterNodeGraph()
         self.__timewindow__ = timewindow
-        self.__tweets__ = SortedListWithKey(key=lambda d: d.createdAt)
+        self.__tweets__ = SortedListWithKey(key=lambda d: d.created_at)
         # set min timestamp as 1/1/1900 UTC for the tweet
         self.__min_timestamp__ = datetime(1900, 1, 1, tzinfo=tzutc())
 
@@ -232,7 +232,7 @@ class TwitterNodeGraphWithSlidingWindow(object):
 
     def add_tweet(self, tweet):
         """add tweet to the graph."""
-        is_tweet_newer = tweet.createdAt > self.__min_timestamp__
+        is_tweet_newer = tweet.created_at > self.__min_timestamp__
         if is_tweet_newer:
             self.__add_new_tweet__(tweet)
             timestamp = self.__reset_sliding_window_ts__()
@@ -241,7 +241,7 @@ class TwitterNodeGraphWithSlidingWindow(object):
 
     def __reset_sliding_window_ts__(self):
         """reset the timestamp of the sliding window."""
-        last_tweet_at = self.__tweets__[-1].createdAt
+        last_tweet_at = self.__tweets__[-1].created_at
         self.__min_timestamp__ = last_tweet_at - self.__timewindow__
         return self.__min_timestamp__
 
