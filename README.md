@@ -11,7 +11,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 ```
 
 
-I used the parser.parse method of the `python-dateutil` module to parse date and time in the raw tweet json and used the SortedListWithKey collection from the `sortedcontainers` module to maintain an ordered collection of tweets based on their createdAt timestamps. 
+I used the parser.parse method of the `python-dateutil` module to parse date and time in the raw tweet json and used the SortedListWithKey collection from the `sortedcontainers` module to maintain an ordered collection of tweets based on their created_at timestamps. 
 Please use [pip](https://pip.pypa.io/en/stable/quickstart/) to install the required python modules by running the command _pip install -r requirements.txt_ 
 ```
 (venv) admins-MacBook-Air:insight-data-challenge admin$ pip install -r requirements.txt 
