@@ -8,17 +8,8 @@ from dateutil.tz import tzutc
 
 
 def is_tweet_text(text):
+    """Checks if text is raw form of tweet."""
     return 'created_at' in text
-
-def parse_tweet(text):
-    """Return Tweet object for raw tweet string."""
-    import json
-    tweet_json = json.loads(text)
-    created_at = tweet_json['created_at']
-    hashtags = []
-    if 'hashtags' in tweet_json['entities']:
-        hashtags = [entry['text'] for entry in tweet_json['entities']['hashtags']]
-    return Tweet(created_at, hashtags)
 
 
 class Tweet(object):
@@ -52,6 +43,35 @@ class Tweet(object):
         """string representing tweet."""
         return 'Hashtags: %s created_at: %s' % (self.hashtags, self.created_at)
 
+
+class TweetWithRawData(Tweet):
+    """Class representing a Tweet along with raw data."""
+
+    def __init__(self, raw_text):
+        """initialize the tweetWithRawData class.
+
+        raw_text:string
+        """
+        def parse_tweet(text):
+            """Return Tweet object for raw tweet string."""
+            import json
+            tweet_json = json.loads(text)
+            created_at = tweet_json['created_at']
+            hashtags = []
+            if 'hashtags' in tweet_json['entities']:
+                hashtags = [entry['text'] for entry in tweet_json['entities']['hashtags']]
+            return (created_at, hashtags)
+        if not is_tweet_text(raw_text):
+            raise ValueError("text is not a tweet""")
+        created_at, hashtags = parse_tweet(raw_text)
+        super(TweetWithRawData, self).__init__(created_at, hashtags)
+        self.__raw_data__ = raw_text
+
+    @property
+    def raw_data(self):
+        """get the raw data  for tweet."""
+        return self.__raw_data__
+        
 
 class TwitterNode(collections.Iterable):
     """Class representing a Twitter Node or Vertex on Graph."""

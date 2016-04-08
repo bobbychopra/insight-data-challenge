@@ -1,7 +1,7 @@
 """Tweet Test Module."""
 import unittest
 from dateutil.parser import parse
-from utils.twitter import Tweet, parse_tweet
+from utils.twitter import Tweet
 
 
 class TweetTests(unittest.TestCase):

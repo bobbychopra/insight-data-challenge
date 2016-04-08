@@ -25,7 +25,9 @@ Successfully installed python-dateutil-2.5.2 six-1.10.0 sortedcontainers-1.4.4
 ```
 
 There are 4 classes in `src/utils/twitter.py` that help calculate the average degree of a vertex in a Twitter hashtag graph for the last 60 seconds, and update this each time a new tweet appears
-1. Tweet Class - Represents a Tweet with has some attributes defined  
-2. TwitterNode Class - Represents a Twitter Vertex or Node on the Graph 
-3. TwitterNodeGraph Class - Represents a graph with Twitter Vertices or Nodes and Edges between them
-4. TwitterNodeGraphWithSlidingWindow Class - Similar to TwitterNodeGraph but has a sliding window  
+
+1. Tweet Class - Represents a Tweet with has some attributes defined
+1. TweetWithRawData Class - Derived class of Tweet, which contains the raw text   
+1. TwitterNode Class - Represents a Twitter Vertex or Node on the Graph 
+1. TwitterNodeGraph Class - Represents a graph with Twitter Vertices or Nodes and Edges between them
+1. TwitterNodeGraphWithSlidingWindow Class - Similar to TwitterNodeGraph but has a sliding window  
