@@ -36,6 +36,31 @@ class TwitterNodeGraphWithSlidingWindowTests(unittest.TestCase):
         self.assertEqual(6, graph.number_of_edges)
         self.assertEqual(2.0, graph.average_degree)
 
+    def test_twitternodegraphwithwindow_has_tweets_with_few_tags(self):
+        """Test for Twitter Node Graph With SlidingWindow does not add
+        tweet outside of the window.
+        """
+        td = timedelta(seconds=60)
+        graph = TwitterNodeGraphWithSlidingWindow(td)
+        new_tweet0 = Tweet('Thu Mar 24 17:56:12 +0000 2016', [])
+        graph.add_tweet(new_tweet0)
+        self.assertEqual([new_tweet0], list(graph.tweets))
+        self.assertEqual(0, graph.number_of_nodes)
+        self.assertEqual(0, graph.number_of_edges)
+        self.assertEqual(0.0, graph.average_degree)
+        new_tweet1 = Tweet('Thu Mar 24 17:56:12 +0000 2016', [''])
+        graph.add_tweet(new_tweet1)
+        self.assertEqual([new_tweet0, new_tweet1], list(graph.tweets))
+        self.assertEqual(0, graph.number_of_nodes)
+        self.assertEqual(0, graph.number_of_edges)
+        self.assertEqual(0.0, graph.average_degree)
+        new_tweet2 = Tweet('Thu Mar 24 17:58:12 +0000 2016', ['Hadoop'])
+        graph.add_tweet(new_tweet2)
+        self.assertEqual([new_tweet2], list(graph.tweets))
+        self.assertEqual(0, graph.number_of_nodes)
+        self.assertEqual(0, graph.number_of_edges)
+        self.assertEqual(0.0, graph.average_degree)
+
     def test_twitternodegraphwithwindow_doesnt_add_old_tweet(self):
         """Test for Twitter Node Graph With SlidingWindow does not add
         tweet outside of the window.
@@ -75,9 +100,9 @@ class TwitterNodeGraphWithSlidingWindowTests(unittest.TestCase):
         self.assertEqual(0, graph.number_of_edges)
         self.assertEqual(0.0, graph.average_degree)
 
-    def test_twitternodegraphwithwindow_removes_old_tweets_2(self):
-        """Test for Twitter Node Graph With SlidingWindow removes
-        old tweet outside of the window.
+    def test_twitternodegraphwithwindow_works_with_readme_example(self):
+        """Test for Twitter Node Graph With SlidingWindow works
+        for scenario described in README for insight data challenge.
         """
         td = timedelta(seconds=60)
         graph = TwitterNodeGraphWithSlidingWindow(td)
@@ -93,10 +118,3 @@ class TwitterNodeGraphWithSlidingWindowTests(unittest.TestCase):
         graph.add_tweet(self.TWEET7)
         self.assertEqual(6, graph.number_of_nodes)
         self.assertEqual(1.66, graph.average_degree)
-        new_tweet = Tweet('Thu Mar 24 17:58:12 +0000 2016', ['Hadoop'])
-        graph.add_tweet(new_tweet)
-        self.assertEqual([new_tweet], list(graph.tweets))
-        self.assertEqual(0, graph.number_of_nodes)
-        self.assertEqual(0, graph.number_of_edges)
-        self.assertEqual(0.0, graph.average_degree)
-        # test for last tweet with high createdAt but no hashtags coming in
